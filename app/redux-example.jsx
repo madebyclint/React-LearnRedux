@@ -1,4 +1,6 @@
-import redux from 'redux'
+// import not working for some reason
+// import redux from 'redux'
+const redux = require('redux')
 
 console.log('Starting redux example')
 
@@ -38,4 +40,19 @@ console.log('Starting redux example')
 // Same input = same output everytime
 // No async/promises
 // Can't manipulate or rely on outside variables/objects/arrays/values
+
+
+
+// Redux example
+
+// Reducer = pure function takes existing state and action as arguments and returns new state
+// let store = redux.createStore(reducer)
+// doesn't have to be called reducer - just for example
+let reducer = (state = {name: 'Anonymous'}, action) => {
+    // state = state || {name: 'Anonymous'} // ES 5 way
+    return state
+}
+let store = redux.createStore(reducer)
+let currentState = store.getState()
+console.log('currentState', currentState)
 
