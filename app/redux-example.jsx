@@ -48,7 +48,7 @@ console.log('Starting redux example')
 // Reducer = pure function takes existing state and action as arguments and returns new state
 // let store = redux.createStore(reducer)
 // doesn't have to be called reducer - just for example
-let reducer = (state = {name: 'Anonymous'}, action) => {
+let reducer = (state: object = {name: 'Anonymous'}, action: string) => {
     // state = state || {name: 'Anonymous'} // ES 5 way
     return state
 }
