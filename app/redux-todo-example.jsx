@@ -8,12 +8,27 @@ const stateDefault = {
     todos: []
 }
 
-const reducer = (state: object = stateDefault, action: string) => {
+const reducer = (state: object = stateDefault, action: object) => {
+    switch (action.type) {
+        case 'CHANGE_SEARCHTEXT':
+            return {
+                ...state,
+                searchText: action.searchText
+            }
+        default:
+            return state
+    }
     return state
 }
 
 let store = redux.createStore(reducer)
 
-console.log(reducer)
 let currentState = store.getState()
 console.log('currentState', currentState)
+
+store.dispatch({
+    type: 'CHANGE_SEARCHTEXT',
+    searchText: 'some search text'
+})
+
+console.log('newState', store.getState())
