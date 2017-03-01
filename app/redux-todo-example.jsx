@@ -8,6 +8,7 @@ const stateDefault = {
     todos: []
 }
 
+let nextTodoId = 1
 const reducer = (state: object = stateDefault, action: object) => {
     switch (action.type) {
         case 'CHANGE_SEARCHTEXT':
@@ -15,10 +16,33 @@ const reducer = (state: object = stateDefault, action: object) => {
                 ...state,
                 searchText: action.searchText
             }
+        case 'ADD_TODO':
+            return {
+                ...state,
+                todos: [
+                    ...state.todos,
+                    {
+                        id: nextTodoId++,
+                        todo: action.todo
+                    }
+                ]
+            }
+        case 'REMOVE_TODO':
+            // return {
+            //     ...state,
+            //     todos: state.todos.filter((todo) => {
+            //         return todo.id !== action.id
+            //     })
+            // }
+            
+            // same as
+            return {
+                ...state,
+                todos: state.todos.filter((todo) => todo.id !== action.id)
+            }
         default:
             return state
     }
-    return state
 }
 
 let store = redux.createStore(reducer, redux.compose(
@@ -32,9 +56,6 @@ let unsubscribe = store.subscribe(() => {
     console.log('SearchText is', state.searchText)
 })
 
-let currentState = store.getState()
-console.log('currentState', currentState)
-
 store.dispatch({
     type: 'CHANGE_SEARCHTEXT',
     searchText: 'some search text'
@@ -45,9 +66,24 @@ store.dispatch({
     searchText: 'different search terms'
 })
 
-unsubscribe()
+// unsubscribe()
 
 store.dispatch({
     type: 'CHANGE_SEARCHTEXT',
     searchText: 'more things to search'
+})
+
+store.dispatch({
+    type: 'ADD_TODO',
+    todo: 'Go exercise'
+})
+
+store.dispatch({
+    type: 'ADD_TODO',
+    todo: 'Go to the movies'
+})
+
+store.dispatch({
+    type: 'REMOVE_TODO',
+    id: 2
 })
