@@ -2,6 +2,8 @@ const redux = require('redux')
 
 console.log('Starting redux todo app')
 
+let nextTodoId = 1
+
 // SearchText reducer and action generators
 // ---------------------------------
 let searchTextReducer = (state: string = '', action: object) => {
@@ -10,6 +12,13 @@ let searchTextReducer = (state: string = '', action: object) => {
             return action.searchText
         default:
             return state
+    }
+}
+
+let changeSearchText = (searchText: string) => {
+    return {
+        type: 'CHANGE_SEARCHTEXT',
+        searchText
     }
 }
 
@@ -32,6 +41,20 @@ let todosReducer = (state: array = [], action: object) => {
     }
 }
 
+let addTodo = (todo: array) => {
+    return {
+        type: 'ADD_TODO',
+        todo
+    }
+}
+
+let removeTodo = (id: string) => {
+    return {
+        type: 'REMOVE_TODO',
+        id
+    }
+}
+
 let reducer = redux.combineReducers({
     searchText: searchTextReducer,
     todos: todosReducer
@@ -48,34 +71,43 @@ let unsubscribe = store.subscribe(() => {
     console.log('SearchText is', state.searchText)
 })
 
-store.dispatch({
-    type: 'CHANGE_SEARCHTEXT',
-    searchText: 'some search text'
-})
+// store.dispatch({
+//     type: 'CHANGE_SEARCHTEXT',
+//     searchText: 'some search text'
+// })
 
-store.dispatch({
-    type: 'CHANGE_SEARCHTEXT',
-    searchText: 'different search terms'
-})
+// store.dispatch({
+//     type: 'CHANGE_SEARCHTEXT',
+//     searchText: 'different search terms'
+// })
+
+// store.dispatch({
+//     type: 'CHANGE_SEARCHTEXT',
+//     searchText: 'more things to search'
+// })
+
+store.dispatch(changeSearchText('some search text'))
+store.dispatch(changeSearchText('different search text'))
+store.dispatch(changeSearchText('more things to search'))
 
 // unsubscribe()
 
-store.dispatch({
-    type: 'CHANGE_SEARCHTEXT',
-    searchText: 'more things to search'
-})
+// store.dispatch({
+//     type: 'ADD_TODO',
+//     todo: 'Go exercise'
+// })
 
-store.dispatch({
-    type: 'ADD_TODO',
-    todo: 'Go exercise'
-})
+// store.dispatch({
+//     type: 'ADD_TODO',
+//     todo: 'Go to the movies'
+// })
 
-store.dispatch({
-    type: 'ADD_TODO',
-    todo: 'Go to the movies'
-})
+store.dispatch(addTodo('Go exercise'))
+store.dispatch(addTodo('Go to the movies'))
 
-store.dispatch({
-    type: 'REMOVE_TODO',
-    id: 2
-})
+// store.dispatch({
+//     type: 'REMOVE_TODO',
+//     id: 2
+// })
+
+store.dispatch(removeTodo(2))
