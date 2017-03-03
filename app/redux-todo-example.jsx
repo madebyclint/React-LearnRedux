@@ -2,49 +2,8 @@ const redux = require('redux')
 
 console.log('Starting redux todo app')
 
-const stateDefault = {
-    searchText: '',
-    showComplete: false,
-    todos: []
-}
-
-let nextTodoId = 1
-const oldReducer = (state: object = stateDefault, action: object) => {
-    switch (action.type) {
-        case 'CHANGE_SEARCHTEXT':
-            return {
-                ...state,
-                searchText: action.searchText
-            }
-        case 'ADD_TODO':
-            return {
-                ...state,
-                todos: [
-                    ...state.todos,
-                    {
-                        id: nextTodoId++,
-                        todo: action.todo
-                    }
-                ]
-            }
-        case 'REMOVE_TODO':
-            // return {
-            //     ...state,
-            //     todos: state.todos.filter((todo) => {
-            //         return todo.id !== action.id
-            //     })
-            // }
-            
-            // same as
-            return {
-                ...state,
-                todos: state.todos.filter((todo) => todo.id !== action.id)
-            }
-        default:
-            return state
-    }
-}
-
+// SearchText reducer and action generators
+// ---------------------------------
 let searchTextReducer = (state: string = '', action: object) => {
     switch (action.type) {
         case 'CHANGE_SEARCHTEXT':
@@ -54,6 +13,8 @@ let searchTextReducer = (state: string = '', action: object) => {
     }
 }
 
+// Todos reducer and action generators
+// ---------------------------------
 let todosReducer = (state: array = [], action: object) => {
     switch (action.type) {
         case 'ADD_TODO':
