@@ -55,9 +55,51 @@ let removeTodo = (id: string) => {
     }
 }
 
+// Map reducer and action generators
+// ---------------------------------
+let mapReducer = (state: array = {isFetching: false, url: undefined}, action: object) => {
+    switch (action.type) {
+        case 'START_LOCATION_FETCH':
+            return {
+                isFetching: true,
+                url: undefined
+            }
+        case 'COMPLETE_LOCATION_FETCH':
+            return {
+                isFetching: false,
+                url: action.url
+            }
+        default:
+            return state
+    }
+}
+
+let startLocationFetch = () => {
+    return {
+        type: 'START_LOCATION_FETCH'
+    }
+}
+
+let completeLocationFetch = (url: string) => {
+    return {
+        type: 'COMPLETE_LOCATION_FETCH',
+        url
+    }
+}
+
+let fetchLocation = () => {
+    store.dispatch(startLocationFetch())
+    axios.get('https://ipinfo.io').then(function (res) {
+        let loc = res.data.loc
+        let baseUrl = 'http://maps.google.com?q='
+        store.dispatch(completeLocationFetch(baseUrl + loc))
+    })
+}
+
 let reducer = redux.combineReducers({
     searchText: searchTextReducer,
-    todos: todosReducer
+    todos: todosReducer,
+    map: mapReducer
 })
 
 let store = redux.createStore(reducer, redux.compose(
@@ -69,7 +111,13 @@ let unsubscribe = store.subscribe(() => {
     // subcribe() returns a function to unsubscribe
     let state = store.getState()
     console.log('SearchText is', state.searchText)
+
+    if (state.map.isFetching) {
+        document.getElementById('map').innerHTML = 'Loading'   
+    }
 })
+
+fetchLocation()
 
 // store.dispatch({
 //     type: 'CHANGE_SEARCHTEXT',
@@ -111,3 +159,5 @@ store.dispatch(addTodo('Go to the movies'))
 // })
 
 store.dispatch(removeTodo(2))
+
+
