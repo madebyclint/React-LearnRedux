@@ -1,4 +1,5 @@
 const redux = require('redux')
+const axios = require('axios')
 
 console.log('Starting redux todo app')
 
@@ -110,10 +111,11 @@ let store = redux.createStore(reducer, redux.compose(
 let unsubscribe = store.subscribe(() => {
     // subcribe() returns a function to unsubscribe
     let state = store.getState()
-    console.log('SearchText is', state.searchText)
 
     if (state.map.isFetching) {
-        document.getElementById('map').innerHTML = 'Loading'   
+        document.getElementById('app').innerHTML = 'Loading...'
+    } else if (state.map.url) {
+        document.getElementById('app').innerHTML = `<a href="${state.map.url}" target="_blank">View your location</a>`
     }
 })
 
