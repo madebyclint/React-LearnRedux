@@ -1,9 +1,6 @@
 const redux = require('redux')
-const axios = require('axios')
 
 console.log('Starting redux todo app')
-
-let nextTodoId = 1
 
 let actions = require('./actions/index')
 let store = require('./store/configureStore').configure()
@@ -20,7 +17,7 @@ let unsubscribe = store.subscribe(() => {
     }
 })
 
-actions.fetchLocation()
+store.dispatch(actions.fetchLocation())
 
 // store.dispatch({
 //     type: 'CHANGE_SEARCHTEXT',

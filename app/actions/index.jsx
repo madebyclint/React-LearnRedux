@@ -1,3 +1,5 @@
+const axios = require('axios')
+
 export let changeSearchText = (searchText: string) => {
     return {
         type: 'CHANGE_SEARCHTEXT',
@@ -33,10 +35,12 @@ export let completeLocationFetch = (url: string) => {
 }
 
 export let fetchLocation = () => {
-    store.dispatch(startLocationFetch())
-    axios.get('https://ipinfo.io').then(function (res) {
-        let loc = res.data.loc
-        let baseUrl = 'http://maps.google.com?q='
-        store.dispatch(completeLocationFetch(baseUrl + loc))
-    })
+    return (dispatch, getState) => {
+        dispatch(startLocationFetch())
+        axios.get('https://ipinfo.io').then(function (res) {
+            let loc = res.data.loc
+            let baseUrl = 'http://maps.google.com?q='
+            dispatch(completeLocationFetch(baseUrl + loc))
+        })
+    }
 }

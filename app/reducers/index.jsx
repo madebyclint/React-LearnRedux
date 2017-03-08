@@ -12,6 +12,7 @@ export let searchTextReducer = (state: string = '', action: object) => {
 // Todos reducer and action generators
 // ---------------------------------
 export let todosReducer = (state: array = [], action: object) => {
+    let nextTodoId = 1
     switch (action.type) {
         case 'ADD_TODO':
             return [

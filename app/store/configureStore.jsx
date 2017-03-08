@@ -1,5 +1,5 @@
 const redux = require('redux')
-const thunk = require('redux-thunk').default()
+import ReduxThunk from 'redux-thunk'
 let {searchTextReducer, todosReducer, mapReducer} = require('../reducers/index')
 
 export let configure = () => {
@@ -10,6 +10,7 @@ export let configure = () => {
     })
 
     let store = redux.createStore(reducer, redux.compose(
+        redux.applyMiddleware(ReduxThunk),
         window.devToolsExtension ? window.devToolsExtension() : f => f
     ))
 
